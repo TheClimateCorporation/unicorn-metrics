@@ -1,12 +1,3 @@
-require 'raindrops'
-require 'unicorn_metrics/registry'
-require 'unicorn_metrics/version'
-require 'unicorn_metrics/counter'
-require 'unicorn_metrics/default_http_counters'
-require 'unicorn_metrics/status_counter'
-require 'unicorn_metrics/method_counter'
-require 'forwardable'
-
 module UnicornMetrics
   class << self
 
@@ -45,3 +36,13 @@ module UnicornMetrics
     end
   end
 end
+
+require 'raindrops'
+require 'unicorn_metrics/registry'
+require 'unicorn_metrics/version'
+require 'unicorn_metrics/counter'
+require 'unicorn_metrics/default_http_counters'
+require 'unicorn_metrics/status_counter'
+require 'unicorn_metrics/method_counter'
+require 'forwardable'
+
