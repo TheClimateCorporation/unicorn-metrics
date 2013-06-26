@@ -4,9 +4,11 @@ describe UnicornMetrics::Registry do
   describe "METRIC_TYPES" do
     it "returns a hash that maps type symbols to class names" do
       hash = {
-        :counter => 'Counter',
+        :counter          => 'Counter',
+        :timer            => 'Timer',
         :response_counter => 'ResponseCounter',
-        :request_counter => 'RequestCounter'
+        :request_counter  => 'RequestCounter',
+        :request_timer    => 'RequestTimer'
       }
       UnicornMetrics::Registry::METRIC_TYPES.must_equal hash
     end
@@ -29,3 +31,4 @@ describe UnicornMetrics::Registry do
     end
   end
 end
+

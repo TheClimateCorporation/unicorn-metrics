@@ -6,8 +6,9 @@ class UnicornMetrics::ResponseCounter < UnicornMetrics::Counter
 
   STATUS_COUNTERS = []
 
-  # :status_code is a regex pattern
-  # :path is regex pattern
+  # @param name [String] user-defined name
+  # @param status_code [Regex] the HTTP status code (e.g., `/[2]\d{2}/`)
+  # @param path [Regex] optional regex that is used to match to a specific URI
   def initialize(name, status_code, path=nil)
     @path        = path
     @status_code = status_code
@@ -15,14 +16,20 @@ class UnicornMetrics::ResponseCounter < UnicornMetrics::Counter
     super(name)
   end
 
+  # @return [Array<UnicornMetrics::ResponseCounter>]
   def self.counters ; STATUS_COUNTERS ; end
 
+
+  # @param status [String] is the HTTP status code of the request
+  # @param path [String] is the URI of the request
   def self.notify(status, path)
     counters.each { |c| c.increment if c.path_status_match?(status, path) }
   end
 
-  def path_status_match?(stat_val,path_val)
-    status_matches?(stat_val) && path_matches?(path_val)
+  # @param (see #notify)
+  # @return [Boolean]
+  def path_status_match?(status,path)
+    status_matches?(status) && path_matches?(path)
   end
 
   private

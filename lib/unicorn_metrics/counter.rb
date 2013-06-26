@@ -14,11 +14,13 @@ class UnicornMetrics::Counter
   def_instance_delegator :@stats, :incr_value, :increment
   def_instance_delegator :@stats, :decr_value, :decrement
 
+  # @param name [String] user-defined name
   def initialize(name)
     @name  = name
     @stats = Stats.new
   end
 
+  # Reset the counter
   def reset
     @stats.value = 0
   end
@@ -27,6 +29,7 @@ class UnicornMetrics::Counter
     "counter"
   end
 
+  # @return [Hash] JSON representation of the object
   def as_json(*)
     {
       name => {

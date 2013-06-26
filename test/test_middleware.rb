@@ -40,8 +40,8 @@ describe UnicornMetrics::Middleware do
       it "includes raindrops middleware metrics" do
         @hash.must_include "raindrops.calling"
         @hash.must_include "raindrops.writing"
-        @hash.must_include "raindrops.123.active"
-        @hash.must_include "raindrops.123.queued"
+        @hash.must_include "raindrops.tcp.active"
+        @hash.must_include "raindrops.tcp.queued"
       end
     end
 

@@ -1,6 +1,6 @@
 # UnicornMetrics
 
-TODO: Write a gem description
+Gather metrics from a Ruby application. Specifically targeted at Rack-based applications that use the [Unicorn](http://unicorn.bogomips.org) preforking webserver
 
 ## Installation
 
@@ -18,6 +18,8 @@ Or install it yourself as:
 
 ## Usage
 
+### Counters
+
 UnicornMetrics::Counter implements a convenient wrapper around an atomic counter.
 Register new counters in the application:
 
@@ -29,8 +31,6 @@ Register new counters in the application:
       c.register(:counter, "test_counter")
       #
     end
-
-### Counters
 
 Register a new counter,
 
@@ -62,10 +62,44 @@ Use it in the application
     >> counter.count
     #=> 0
 
-### HTTP Request and Response Counters
+### Timers
+
+UnicornMetrics::Timer implements a Timer object that tracks elapsed time and ticks.
+
+Register a new timer,
+
+    UnicornMetrics.configure do |c|
+      c.register(:timer, "test_timer")
+    end
+
+Use it in the application
+
+    >> timer = UnicornMetrics.test_timer
+
+    # Time some action
+    >> elapsed_time = Benchmark.realtime { sleep(10) }
+
+    # Record it in the timer
+    >> timer.tick(elapsed_time)
+
+    # Get the total elapsed time
+    # We get 3 significant digits after the decimal point
+    >> timer.sum
+    => 10.001
+
+    # Reset the timer
+    >> timer.reset
+    >> timer.sum
+    => 0.0
+
+### Gauges
+
+TODO
+
+### HTTP Request/Response Counters and Request Timers
 
 Register a `UnicornMetrics::ResponseCounter` or `UnicornMetrics::RequestCounter` to track
-the response status code or request method to a specified path. Not
+the response status code or request method to a specified path.
 
     # Path is optional
     >> UnicornMetrics.register(:response_counter, "responses.2xx", /[2]\d{2}/)
@@ -73,7 +107,7 @@ the response status code or request method to a specified path. Not
     # Request counter with a 'path' argument
     >> UnicornMetrics.register(:request_counter, "requests.POST", 'POST', /^\/my_endpoint\/$/)
 
-Default counters can be registered during initial config:
+HTTP metrics must be enabled in the config file.
 
     # Rails.root/config/initializers/unicorn_metrics.rb
 
@@ -81,7 +115,7 @@ Default counters can be registered during initial config:
       c.http_metrics = true #Default false
     end
 
-This will give you these counters for free: "responses.4xx", "responses.5xx", "responses.2xx", "responses.3xx"
+This will give you these timers and counters for free: "responses.4xx", "responses.5xx", "responses.2xx", "responses.3xx"
 "requests.POST", "requests.PUT", "requests.GET", "requests.DELETE"
 
 ## Middleware
@@ -103,67 +137,73 @@ Add to the top of the middleware stack in `config.ru`:
 Metrics will be published to the defined path (i.e., http://localhost:3000/metrics )
 
     {
-    "my_first_counter": {
-        "type": "counter",
-        "value": 0
+      # A custom Request Timer added here
+      # See example_config.rb
+      "api/v1/custom/id.GET": {
+        "type": "timer",
+        "sum": 0.0,
+        "count": 0
       },
-    "responses.2xx": {
+      "responses.2xx": {
         "type": "counter",
-        "value": 5
+        "value": 1
       },
       "responses.3xx": {
         "type": "counter",
-        "value": 92
+        "value": 19
       },
       "responses.4xx": {
         "type": "counter",
-        "value": 4
+        "value": 0
       },
       "responses.5xx": {
         "type": "counter",
         "value": 0
       },
       "requests.GET": {
-        "type": "counter",
-        "value": 100
+        "type": "timer",
+        "sum": 1.666,
+        "count": 20
       },
       "requests.POST": {
-        "type": "counter",
-        "value": 1
+        "type": "timer",
+        "sum": 0.0,
+        "count": 0
       },
       "requests.DELETE": {
-        "type": "counter",
-        "value": 0
+        "type": "timer",
+        "sum": 0.0,
+        "count": 0
       },
       "requests.HEAD": {
-        "type": "counter",
-        "value": 0
+        "type": "timer",
+        "sum": 0.0,
+        "count": 0
       },
       "requests.PUT": {
-        "type": "counter",
-        "value": 0
+        "type": "timer",
+        "sum": 0.0,
+        "count": 0
       },
       "raindrops.calling": {
-        "type": "counter",
-        "value": 0
-      },
-      "raindrops.calling": {
-        "type": "counter",
+        "type": "gauge",
         "value": 0
       },
       "raindrops.writing": {
-        "type": "counter",
+        "type": "gauge",
         "value": 0
       },
       # This will only work on Linux platforms as specified by the Raindrops::Middleware
-      "raindrops.listeners": [
-        {
-            "127.0.0.1": {
-                "active": 10,
-                "queued": 5
-            }
-        }
-      ]
+      # Listeners on TCP sockets
+      "raindrops.tcp.active": {
+        "type": "gauge",
+        "value": 0
+      },
+      # Listeners on Unix sockets
+      "raindrops.unix.active": {
+        "type": "gauge",
+        "value": 0
+      }
     }
 
 ## Contributing
@@ -174,7 +214,7 @@ Metrics will be published to the defined path (i.e., http://localhost:3000/metri
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
-## TODO
 
-- Improve the README
+## TODO:
+
 - Implement additional metric types

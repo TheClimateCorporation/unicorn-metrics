@@ -6,21 +6,27 @@ class UnicornMetrics::RequestCounter < UnicornMetrics::Counter
 
   METHOD_COUNTERS = []
 
-  # :method_name is a string
-  # :path is regex pattern
+  # @param name [String] user-defined name
+  # @param method_name [String] name of the HTTP method
+  # @param path [Regex] optional regex that is used to match to a specific URI
   def initialize(name, method_name, path=nil)
     @path        = path
-    @method_name = method_name.to_s
+    @method_name = method_name.to_s.upcase
     METHOD_COUNTERS << self
     super(name)
   end
 
+  # @return [Array<UnicornMetrics::RequestCounter>]
   def self.counters ; METHOD_COUNTERS ; end
 
+  # @param meth_val [String] is the HTTP method of the request
+  # @param path [String] is the URI of the request
   def self.notify(meth_val, path)
     counters.each { |c| c.increment if c.path_method_match?(meth_val, path) }
   end
 
+  # @param (see #notify)
+  # @return [Boolean]
   def path_method_match?(meth_val, path_val)
     path_matches?(path_val) && method_matches?(meth_val)
   end

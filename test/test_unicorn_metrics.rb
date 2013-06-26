@@ -23,8 +23,9 @@ describe UnicornMetrics do
     context "when arg is true" do
       before { UnicornMetrics.http_metrics = true }
 
-      it "extends Registry with DefaultHttpCounters module" do
+      it "extends Registry with DefaultHttpMetrics module" do
         UnicornMetrics.registry.must_respond_to :register_default_http_counters
+        UnicornMetrics.registry.must_respond_to :register_default_http_timers
       end
 
       it "registers the default http counters" do

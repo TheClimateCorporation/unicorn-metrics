@@ -3,8 +3,7 @@ UnicornMetrics.configure do |c|
   # c.register(:counter, "counter_one")
   # UnicornMetrics.counter_one.increment
   #
-  # Names can be separated by dots and spaces, but the getter methods \
-  # will use underscores:
+  # Names can be separated by dots and spaces, but the getter methods will use underscores:
   # c.register(:counter, "counter.one")
   # UnicornMetrics.counter_one.increment
 
@@ -16,5 +15,9 @@ UnicornMetrics.configure do |c|
   #
   c.http_metrics = true # Default false
 
+  # Register a timer for GET requests to URIs that match api/v1/path/<id> 
+  c.register(:request_timer, "api/v1/path/id.GET", 'GET', %r{\/api\/v1\/path\/\d+})
+
+  # Register a counter for all 200 responses (path not specified)
   c.register(:response_counter, "responses.200", /200/)
 end
