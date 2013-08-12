@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/lumberj/unicorn-metrics.png)](https://travis-ci.org/lumberj/unicorn-metrics)
+
 # UnicornMetrics
 
 Gather metrics from a Ruby application. Specifically targeted at Rack-based applications that use the [Unicorn](http://unicorn.bogomips.org) preforking webserver
