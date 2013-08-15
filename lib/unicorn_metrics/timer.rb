@@ -50,7 +50,7 @@ class UnicornMetrics::Timer
       name => {
         "type"  => type,
         "sum"   => sum,
-        "count" => count
+        "value" => count
       }
     }
   end

@@ -144,7 +144,7 @@ Metrics will be published to the defined path (i.e., http://localhost:3000/metri
       "api/v1/custom/id.GET": {
         "type": "timer",
         "sum": 0.0,
-        "count": 0
+        "value": 0
       },
       "responses.2xx": {
         "type": "counter",
@@ -165,27 +165,27 @@ Metrics will be published to the defined path (i.e., http://localhost:3000/metri
       "requests.GET": {
         "type": "timer",
         "sum": 1.666,
-        "count": 20
+        "value": 20
       },
       "requests.POST": {
         "type": "timer",
         "sum": 0.0,
-        "count": 0
+        "value": 0
       },
       "requests.DELETE": {
         "type": "timer",
         "sum": 0.0,
-        "count": 0
+        "value": 0
       },
       "requests.HEAD": {
         "type": "timer",
         "sum": 0.0,
-        "count": 0
+        "value": 0
       },
       "requests.PUT": {
         "type": "timer",
         "sum": 0.0,
-        "count": 0
+        "value": 0
       },
       "raindrops.calling": {
         "type": "gauge",

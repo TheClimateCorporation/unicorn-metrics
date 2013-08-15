@@ -57,7 +57,7 @@ describe UnicornMetrics::Timer do
         @timer.name => {
           "type"  => @timer.type,
           "sum"   => @timer.sum,
-          "count" => @timer.count
+          "value" => @timer.count
         }
       }
 
