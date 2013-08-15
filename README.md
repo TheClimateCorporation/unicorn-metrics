@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/lumberj/unicorn-metrics.png)](https://travis-ci.org/lumberj/unicorn-metrics)
+[![Build Status](https://travis-ci.org/TheClimateCorporation/unicorn-metrics.png)](https://travis-ci.org/TheClimateCorporation/unicorn-metrics)
 
 # UnicornMetrics
 
