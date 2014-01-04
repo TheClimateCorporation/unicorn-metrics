@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/TheClimateCorporation/unicorn-metrics.png)](https://travis-ci.org/TheClimateCorporation/unicorn-metrics)
+[![Build Status](https://travis-ci.org/TheClimateCorporation/unicorn-metrics.png)](https://travis-ci.org/TheClimateCorporation/unicorn-metrics) [![Code Climate](https://codeclimate.com/github/TheClimateCorporation/unicorn-metrics.png)](https://codeclimate.com/github/TheClimateCorporation/unicorn-metrics)
 
 # UnicornMetrics
 
