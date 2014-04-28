@@ -25,6 +25,7 @@ Or install it yourself as:
 UnicornMetrics::Counter implements a convenient wrapper around an atomic counter.
 Register new counters in the application:
 
+```ruby
     UnicornMetrics.configure do |c|
       # Configure a new counter with the name 'test_counter'
       # Then access this counter UnicornMetrics.test_counter
@@ -33,15 +34,19 @@ Register new counters in the application:
       c.register(:counter, "test_counter")
       #
     end
+```
 
 Register a new counter,
 
+```ruby
     UnicornMetrics.configure do |c|
       c.register(:counter, "test_counter")
     end
+```
 
 Use it in the application
 
+```ruby
     >> counter = UnicornMetrics.test_counter
 
     # Getting the count
@@ -63,6 +68,7 @@ Use it in the application
     >> counter.reset
     >> counter.count
     #=> 0
+```
 
 ### Timers
 
@@ -70,12 +76,15 @@ UnicornMetrics::Timer implements a Timer object that tracks elapsed time and tic
 
 Register a new timer,
 
+```ruby
     UnicornMetrics.configure do |c|
       c.register(:timer, "test_timer")
     end
+```
 
 Use it in the application
 
+```ruby
     >> timer = UnicornMetrics.test_timer
 
     # Time some action
@@ -93,6 +102,7 @@ Use it in the application
     >> timer.reset
     >> timer.sum
     => 0.0
+```
 
 ### Gauges
 
@@ -103,19 +113,23 @@ TODO
 Register a `UnicornMetrics::ResponseCounter` or `UnicornMetrics::RequestCounter` to track
 the response status code or request method to a specified path.
 
+```ruby
     # Path is optional
     >> UnicornMetrics.register(:response_counter, "responses.2xx", /[2]\d{2}/)
 
     # Request counter with a 'path' argument
     >> UnicornMetrics.register(:request_counter, "requests.POST", 'POST', /^\/my_endpoint\/$/)
+```
 
 HTTP metrics must be enabled in the config file.
 
+```ruby
     # Rails.root/config/initializers/unicorn_metrics.rb
 
     UnicornMetrics.configure do |c|
       c.http_metrics = true #Default false
     end
+```
 
 This will give you these timers and counters for free: "responses.4xx", "responses.5xx", "responses.2xx", "responses.3xx"
 "requests.POST", "requests.PUT", "requests.GET", "requests.DELETE"
@@ -129,18 +143,21 @@ It is currently set to provide the default Raindrops data as part of the metrics
 
 Add to the top of the middleware stack in `config.ru`:
 
+```ruby
     # config.ru
 
     require 'unicorn_metrics/middleware'
     use UnicornMetrics::Middleware, :path => "/metrics"
     # other middleware...
     run N::Application
+```
 
 Metrics will be published to the defined path (i.e., http://localhost:3000/metrics )
 
+```javascript
     {
-      # A custom Request Timer added here
-      # See example_config.rb
+      // A custom Request Timer added here
+      // See example_config.rb
       "api/v1/custom/id.GET": {
         "type": "timer",
         "sum": 0.0,
@@ -195,18 +212,19 @@ Metrics will be published to the defined path (i.e., http://localhost:3000/metri
         "type": "gauge",
         "value": 0
       },
-      # This will only work on Linux platforms as specified by the Raindrops::Middleware
-      # Listeners on TCP sockets
+      // This will only work on Linux platforms as specified by the Raindrops::Middleware
+      // Listeners on TCP sockets
       "raindrops.tcp.active": {
         "type": "gauge",
         "value": 0
       },
-      # Listeners on Unix sockets
+      // Listeners on Unix sockets
       "raindrops.unix.active": {
         "type": "gauge",
         "value": 0
       }
     }
+```
 
 ## Contributing
 
