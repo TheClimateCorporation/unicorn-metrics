@@ -9,6 +9,7 @@ module UnicornMetrics::Registry
 
   # Map metrics types to class names
   METRIC_TYPES = {
+    :gauge            => 'Gauge',
     :counter          => 'Counter',
     :timer            => 'Timer',
     :response_counter => 'ResponseCounter',
@@ -30,10 +31,10 @@ module UnicornMetrics::Registry
     # @param type [Symbol] underscored metric name
     # @param name [String] string representing the metric name
     # @return [Counter, Timer, ResponseCounter, RequestCounter, RequestTimer]
-    def register(type, name, *args)
+    def register(type, name, *args, &block)
       type          = METRIC_TYPES.fetch(type) { raise "Invalid type: #{type}" }
       validate_name!(name)
-      metric        = UnicornMetrics.const_get(type).new(name,*args)
+      metric        = UnicornMetrics.const_get(type).new(name,*args, &block)
       metrics[name] = metric
       define_getter(name)
 

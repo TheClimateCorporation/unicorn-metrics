@@ -4,6 +4,7 @@ describe UnicornMetrics::Registry do
   describe "METRIC_TYPES" do
     it "returns a hash that maps type symbols to class names" do
       hash = {
+        :gauge            => 'Gauge',
         :counter          => 'Counter',
         :timer            => 'Timer',
         :response_counter => 'ResponseCounter',
