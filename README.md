@@ -106,7 +106,17 @@ Use it in the application
 
 ### Gauges
 
-TODO
+UnicornMetrics::Gauge implements a Gauge that returns the instantaneous value of executing a block.
+
+Register a new gauge,
+
+    ## In the config file
+    UnicornMetrics.configure do |c|
+      c.register(:gauge, "test_gauge") { 10 }
+    end
+
+   ## In application code
+   UnicornMetrics.register(:gauge, "test_gauge") { 10 }
 
 ### HTTP Request/Response Counters and Request Timers
 
